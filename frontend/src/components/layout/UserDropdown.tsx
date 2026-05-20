@@ -4,7 +4,8 @@
  */
 
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import Link from 'next/link';
+import { useRouter, usePathname } from 'next/navigation';
 import { LogOut, User, Settings, Shield, Loader2, LayoutDashboard } from 'lucide-react';
 import {
   DropdownMenu,
@@ -14,7 +15,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useLocation } from 'react-router-dom';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/ThemeToggle';
@@ -54,7 +54,7 @@ export function UserDropdown({
   userInitials,
   avatarUrl,
 }: UserDropdownProps) {
-  const navigate = useNavigate();
+  const router = useRouter();
   const { user } = useAuthStore();
   const { currentOrganization } = useTenant();
   const { theme } = useTheme();
@@ -105,7 +105,7 @@ export function UserDropdown({
 
       // 3. NAVIGATE IMMEDIATELY
       // Now that we are locally "logged out", navigate to the public login page.
-      navigate('/login');
+      router.push('/login');
 
       // 4. CLEAN UP SERVER SESSION
       // Tell datsDB to kill the session on the server.
@@ -124,7 +124,7 @@ export function UserDropdown({
       console.error('Logout exception:', error);
       // Ensure we are logged out locally even if exception
       useAuthStore.getState().logout();
-      navigate('/login');
+      router.push('/login');
     }
   };
 
@@ -209,7 +209,7 @@ export function UserDropdown({
             const IconComponent = iconMap[item.icon];
 
             return (
-              <Link key={item.id} to={item.path}>
+              <Link key={item.id} href={item.path}>
                 <DropdownMenuItem style={{ cursor: 'pointer' }}>
                   {IconComponent && (
                     <IconComponent
@@ -265,9 +265,8 @@ export function UserDropdown({
 }
 
 function FavoriteToggleItem({ menuItems }: { menuItems: UserMenuItem[] }) {
-  const location = useLocation();
+  const currentPath = usePathname();
   const { isFavorite, toggleFavorite } = useFavorites();
-  const currentPath = location.pathname;
   const isFav = isFavorite(currentPath);
 
   // Check if current page is already in the main menu
@@ -350,7 +349,7 @@ function FavoritesList() {
           : fav.value.path;
 
         return (
-          <Link key={fav.id} to={fav.value.path}>
+          <Link key={fav.id} href={fav.value.path}>
             <DropdownMenuItem style={{ cursor: 'pointer' }}>
               <Star
                 style={{
