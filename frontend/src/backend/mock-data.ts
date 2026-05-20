@@ -152,3 +152,6 @@ export const PRICING_PLANS = [
     features: ["Everything in Pro", "University licenses", "Team collaboration", "LMS integration", "Dedicated GPU compute", "SLA & onboarding"],
     cta: "Contact sales" },
 ];
+
+export type { AIMessage };
+
