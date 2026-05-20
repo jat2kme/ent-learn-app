@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
-import type { Role } from "./mock-data";
+import type { Role } from "@/backend/types";
 
 type Theme = "light" | "dark";
 
