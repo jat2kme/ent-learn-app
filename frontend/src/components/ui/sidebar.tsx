@@ -48,6 +48,7 @@ import {
   SIDEBAR_KEYBOARD_SHORTCUT,
   SidebarContext,
   useSidebar,
+  type SidebarContextProps,
 } from "./sidebar-context"
 
 const SidebarProvider = React.forwardRef<
